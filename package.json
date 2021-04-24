@@ -7,7 +7,11 @@
     "build": "npm run cjs",
     "cjs": "ascjs --no-default esm cjs"
   },
-  "keywords": ["JS", "JSON", "Session"],
+  "keywords": [
+    "JS",
+    "JSON",
+    "Session"
+  ],
   "author": "Andrea Giammarchi",
   "license": "ISC",
   "devDependencies": {
@@ -21,5 +25,13 @@
       "default": "./cjs/index.js"
     },
     "./package.json": "./package.json"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WebReflection/js-in-json-session.git"
+  },
+  "bugs": {
+    "url": "https://github.com/WebReflection/js-in-json-session/issues"
+  },
+  "homepage": "https://github.com/WebReflection/js-in-json-session#readme"
 }
