@@ -4,8 +4,9 @@
   "description": "JS in JSON Session",
   "main": "./cjs/index.js",
   "scripts": {
-    "build": "npm run cjs",
-    "cjs": "ascjs --no-default esm cjs"
+    "build": "npm run cjs && npm test",
+    "cjs": "ascjs --no-default esm cjs",
+    "test": "node test/test.js && echo '' && php php/test.php"
   },
   "keywords": [
     "JS",

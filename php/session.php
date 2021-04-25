@@ -1,3 +1,5 @@
+<?php namespace JSinJSON;
+
 /*!
  * ISC License
  *
@@ -16,31 +18,34 @@
  * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-export default class Session {
-  constructor(modules) {
-    this.map = new Map([['_', modules._]]);
-    this.flushed = new Set;
-    this.modules = modules;
+class Session {
+  public function __construct($modules) {
+    $this->map = new \stdClass;
+    $this->map->_ = $modules->_;
+    $this->flushed = array();
+    $this->modules = $modules;
   }
-  add(module) {
-    if (!this.map.has(module)) {
-      const info = this.modules[module];
-      info.dependencies.forEach(this.add, this);
-      this.map.set(module, info);
+  public function add($module) {
+    if (!property_exists($this->map, $module)) {
+      $info = $this->modules->$module;
+      foreach ($info->dependencies as $dependency)
+        $this->add($dependency);
+      $this->map->$module = $info;
     }
-    return this;
   }
-  flush() {
-    const output = [];
-    this.map.forEach(({module, code}, name) => {
-      if (!this.flushed.has(name)) {
-        this.flushed.add(name);
-        output.push(module);
+  public function flush() {
+    $output = array();
+    foreach ($this->map as $name => $info) {
+      if (array_search($name, $this->flushed, true) === false) {
+        $this->flushed[] = $name;
+        $output[] = $info->module;
       }
-      if (0 < code.length)
-        output.push(code);
-    });
-    this.map.clear();
-    return output.join('\n');
+      if (0 < strlen($info->code))
+        $output[] = $info->code;
+    }
+    $this->map = new \stdClass;
+    return implode("\n", $output);
   }
 }
+
+?>

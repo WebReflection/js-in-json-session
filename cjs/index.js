@@ -17,24 +17,23 @@
  * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-module.exports = class Session extends Map {
+module.exports = class Session {
   constructor(modules) {
-    super([['_', modules._]]);
+    this.map = new Map([['_', modules._]]);
     this.flushed = new Set;
     this.modules = modules;
   }
   add(module) {
-    if (!this.has(module)) {
-      const {module: m, code, dependencies} = this.modules[module];
-      for (let i = 0, {length} = dependencies; i < length; i++)
-        this.add(dependencies[i]);
-      this.set(module, {module: m, code});
+    if (!this.map.has(module)) {
+      const info = this.modules[module];
+      info.dependencies.forEach(this.add, this);
+      this.map.set(module, info);
     }
     return this;
   }
   flush() {
     const output = [];
-    this.forEach(({module, code}, name) => {
+    this.map.forEach(({module, code}, name) => {
       if (!this.flushed.has(name)) {
         this.flushed.add(name);
         output.push(module);
@@ -42,7 +41,7 @@ module.exports = class Session extends Map {
       if (0 < code.length)
         output.push(code);
     });
-    this.clear();
+    this.map.clear();
     return output.join('\n');
   }
 }
