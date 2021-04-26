@@ -6,7 +6,7 @@
   "scripts": {
     "build": "npm run cjs && npm test",
     "cjs": "ascjs --no-default esm cjs",
-    "test": "node test/test.js && echo '' && php php/test.php"
+    "test": "node test/test.js && echo '' && php php/test.php && echo '' && python python/test.py"
   },
   "keywords": [
     "JS",
