@@ -20,10 +20,10 @@
 
 class Session {
   public function __construct($modules) {
+    $this->modules = $modules;
+    $this->flushed = new \stdClass;
     $this->map = new \stdClass;
     $this->map->_ = $modules->_;
-    $this->flushed = array();
-    $this->modules = $modules;
   }
   public function add($module) {
     if (!property_exists($this->map, $module)) {
@@ -36,8 +36,8 @@ class Session {
   public function flush() {
     $output = array();
     foreach ($this->map as $name => $info) {
-      if (array_search($name, $this->flushed, true) === false) {
-        $this->flushed[] = $name;
+      if (!property_exists($this->flushed, $name)) {
+        $this->flushed->$name = true;
         $output[] = $info->module;
       }
       if (0 < strlen($info->code))
