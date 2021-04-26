@@ -1,6 +1,6 @@
 {
   "name": "js-in-json-session",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "JS in JSON Session",
   "main": "./cjs/index.js",
   "scripts": {
