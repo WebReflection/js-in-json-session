@@ -19,7 +19,7 @@ CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 class Session:
   def __init__(self, modules):
     self.map = {'_': modules['_']}
-    self.flushed = []
+    self.flushed = set()
     self.modules = modules
 
   def add(self, module):
@@ -34,7 +34,7 @@ class Session:
     for name in self.map:
       info = self.map[name]
       if not name in self.flushed:
-        self.flushed.append(name)
+        self.flushed.add(name)
         output.append(info['module'])
       if 0 < len(info['code']):
         output.append(info['code'])
